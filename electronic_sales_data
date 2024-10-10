@@ -31,9 +31,9 @@ LIMIT 100;
 //Calculating average daily count of each product sol
 SELECT avg(Daily_Count) as Average_Daily_Count
 FROM (
-			SELECT Purchase_Date, count(*) as Daily_Count
-			FROM Electronic_sales
-			GROUP BY Purchase_Date
+	SELECT Purchase_Date, count(*) as Daily_Count
+	FROM Electronic_sales
+	GROUP BY Purchase_Date
 ) AS DailyCounts;
 -- Result: 1 rows returned in 20ms
 
@@ -47,9 +47,9 @@ ORDER BY Purchase_Date;
 //Calculating average daily revenue
 SELECT avg(Daily_Revenue) as Average_Daily_Revenue
 FROM (
-			SELECT Purchase_Date, sum(Total_Price) as Daily_Revenue
-			FROM Electronic_sales
-			GROUP BY Purchase_Date
+	SELECT Purchase_Date, sum(Total_Price) as Daily_Revenue
+	FROM Electronic_sales
+	GROUP BY Purchase_Date
 ) As DailyRevenue;
 -- Result: 1 rows returned in 27ms
 
@@ -81,15 +81,15 @@ WHERE Loyalty_Member = 'Yes';
 
 //Calculating percentage of loyalty members
 SELECT
-			(sum(case WHEN Loyalty_Member = 'Yes' THEN 1 ELSE 0 END) * 100.00 /
-			count(*)) as Percentage_Loyalty_Members
+	(sum(case WHEN Loyalty_Member = 'Yes' THEN 1 ELSE 0 END) * 100.00 /
+	count(*)) as Percentage_Loyalty_Members
 FROM Electronic_sales;
 -- Result: 1 rows returned in 12ms
 
 //Calculating percentage of loyalty members who buy smartphones (most profitable product)
 SELECT
-			(sum(case WHEN Loyalty_Member = 'Yes' AND Product_Type = 'Smartphone' THEN 1 ELSE 0 END) * 100.00 /
-			sum(case	WHEN Product_Type = 'Smartphone'  THEN 1 ELSE 0 END)) as Percentage_Loyalty_Members_Smartphones
+	(sum(case WHEN Loyalty_Member = 'Yes' AND Product_Type = 'Smartphone' THEN 1 ELSE 0 END) * 100.00 /
+	sum(case WHEN Product_Type = 'Smartphone'  THEN 1 ELSE 0 END)) as Percentage_Loyalty_Members_Smartphones
 FROM Electronic_sales;
 -- Result: 1 rows returned in 18ms
 
