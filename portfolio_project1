@@ -1,0 +1,109 @@
+//Analyzing the data
+SELECT*
+FROM Electronic_sales;
+-- Result: 20000 rows returned in 481ms
+
+//Calculating average total price
+SELECT avg(Total_Price)
+FROM Electronic_sales;
+
+//Getting the number of each product sold
+SELECT Product_Type, count(*) as Product_Count
+FROM Electronic_sales
+GROUP BY Product_Type;
+-- Result: 5 rows returned in 17ms
+
+//Calculating the daily count of each product sold
+SELECT Purchase_Date,  count(*) AS Daily_Count
+FROM Electronic_sales
+GROUP BY Purchase_Date
+ORDER BY Purchase_Date;
+-- Result: 366 rows returned in 53ms
+
+//Calculating the daily count of each product sold, limited to 100 rows
+SELECT Purchase_Date,  count(*) AS Daily_Count
+FROM Electronic_sales
+GROUP BY Purchase_Date
+ORDER BY Purchase_Date
+LIMIT 100;
+-- Result: 100 rows returned in 18ms
+
+//Calculating average daily count of each product sol
+SELECT avg(Daily_Count) as Average_Daily_Count
+FROM (
+			SELECT Purchase_Date, count(*) as Daily_Count
+			FROM Electronic_sales
+			GROUP BY Purchase_Date
+) AS DailyCounts;
+-- Result: 1 rows returned in 20ms
+
+//Calculating daily revenue for each product
+SELECT Purchase_Date, sum(Total_Price) AS Daily_Revenue
+FROM Electronic_sales
+GROUP BY Purchase_Date
+ORDER BY Purchase_Date;
+-- Result: 366 rows returned in 81ms
+
+//Calculating average daily revenue
+SELECT avg(Daily_Revenue) as Average_Daily_Revenue
+FROM (
+			SELECT Purchase_Date, sum(Total_Price) as Daily_Revenue
+			FROM Electronic_sales
+			GROUP BY Purchase_Date
+) As DailyRevenue;
+-- Result: 1 rows returned in 27ms
+
+//Calculating total sales by product type
+SELECT Product_Type, round(sum(Total_Price), 2)
+FROM Electronic_sales
+GROUP BY Product_Type
+ORDER BY Product_Type;
+-- Result: 5 rows returned in 20ms
+
+//Calculating percentage of sales by product type
+SELECT Product_Type, round(sum(Total_Price) /
+	(SELECT sum(Total_Price) FROM Electronic_sales) * 100.00, 2) as pct
+FROM Electronic_sales
+GROUP BY Product_Type
+ORDER BY Product_Type;
+-- Result: 5 rows returned in 73ms
+
+//Counting how many people are not loyalty members
+SELECT Loyalty_Member, count(*)
+FROM Electronic_sales;
+-- Result: 1 rows returned in 15ms
+
+//Counting how many people are loyalty members
+SELECT Loyalty_Member, count(*)
+FROM Electronic_sales
+WHERE Loyalty_Member = 'Yes';
+-- Result: 1 rows returned in 15ms
+
+//Calculating percentage of loyalty members
+SELECT
+			(sum(case WHEN Loyalty_Member = 'Yes' THEN 1 ELSE 0 END) * 100.00 /
+			count(*)) as Percentage_Loyalty_Members
+FROM Electronic_sales;
+-- Result: 1 rows returned in 12ms
+
+//Calculating percentage of loyalty members who buy smartphones (most profitable product)
+SELECT
+			(sum(case WHEN Loyalty_Member = 'Yes' AND Product_Type = 'Smartphone' THEN 1 ELSE 0 END) * 100.00 /
+			sum(case	WHEN Product_Type = 'Smartphone'  THEN 1 ELSE 0 END)) as Percentage_Loyalty_Members_Smartphones
+FROM Electronic_sales;
+-- Result: 1 rows returned in 18ms
+
+//Calculating max age of purchaser
+SELECT max(Age)
+FROM Electronic_sales;
+-- Result: 1 rows returned in 15ms
+
+//Calculating min age of purchaser
+SELECT min(Age)
+FROM Electronic_sales;
+-- Result: 1 rows returned in 19ms
+
+//Calculating avg age of purchaser
+SELECT avg(Age)
+FROM Electronic_sales;
+-- Result: 1 rows returned in 22ms
